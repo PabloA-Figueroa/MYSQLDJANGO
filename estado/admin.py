@@ -4,5 +4,4 @@ from estado.models import Estado
 class EstadoAdmin(admin.ModelAdmin):
     list_display = ['fecha']
     search_fields = ['fecha']
-    #filter_horizontal = ['temas']
-# Register your models here.
+

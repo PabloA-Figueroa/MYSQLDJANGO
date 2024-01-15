@@ -31,20 +31,23 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'djongo',
     'adminlte3',
     'adminlte3_theme',
     'camaraComercio',
     'comentarios',
-    'cursos',
-    'estado',
+    'Cursos',
+    'estados',
+    'emprendimiento',
+    'inventario',
 
     'ckeditor',
     'users',
     'rest_framework',
+    'rest_polymorphic',
     'rest_framework.authtoken',
     'corsheaders',
     'storages',
+    'polymorphic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -97,10 +100,12 @@ WSGI_APPLICATION = 'djangoProjectWeb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'PRUEBISIMA',
-        'HOST': 'localhost',
-        'PORT': 27017,
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',   # O la dirección del servidor de tu base de datos
+        'PORT': '3306',        # El puerto de MySQL, por defecto es 3306
     }
 }
 

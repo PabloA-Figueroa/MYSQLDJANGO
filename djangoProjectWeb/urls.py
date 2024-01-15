@@ -22,14 +22,15 @@ from django.urls import path, re_path, include, reverse_lazy
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
-from users.views import UserViewSet, UserLogIn
+from users.views import UserViewSet, UserLogIn, UserDetailAPIView
 from django.conf.urls.static import static
 from django.conf import settings
 
-from estado.router import urlpatterns as estado_urlpatterns
+from estados.router import urlpatterns as estado_urlpatterns
 from comentarios.api.router import router_post
-from cursos.router import urlpatterns as curso_urlpatterns
-
+from Cursos.router import urlpatterns as curso_urlpatterns
+from emprendimiento.router import urlpatterns as emprendimiento_urlpatterns
+from inventario.router import urlpatterns as inventario_urlpatterns
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 urlpatterns = [
@@ -42,6 +43,9 @@ urlpatterns = [
     path('api-vista/', include(router_post.urls)),
     path('api-curso/', include(curso_urlpatterns)),
     path('api-estado/', include(estado_urlpatterns)),
+    path('apid-edit-users/', UserDetailAPIView.as_view(), name='user-detail'),
+    path('api-emp/', include(emprendimiento_urlpatterns)),
+    path('api-inv/', include(inventario_urlpatterns)),
 
     path('api/', include(router.urls)),
     path('api-user-login/', UserLogIn.as_view()),

@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedSimpleRouter
-from cursos.views import CursoModelViewSet, ContenidoCursoViewSet
+from Cursos.views import CursoModelViewSet, ContenidoCursoViewSet
 
 router = DefaultRouter()
 router.register(r'curso', CursoModelViewSet)
