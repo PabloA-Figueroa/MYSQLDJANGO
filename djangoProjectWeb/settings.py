@@ -39,11 +39,9 @@ INSTALLED_APPS = [
     'estados',
     'emprendimiento',
     'inventario',
-
     'ckeditor',
     'users',
     'rest_framework',
-    'rest_polymorphic',
     'rest_framework.authtoken',
     'corsheaders',
     'storages',
@@ -55,7 +53,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
+CKEDITOR_CONFIGS = {
+    'default': {
+        'skin': 'moono-lisa',  # o la skin que prefieras
+        'toolbar': 'Full',  # Puedes personalizar la barra de herramientas como prefieras
+        'height': 200,
+        'width': 'auto',
+        'extraPlugins': 'widget',  # Si necesitas widgets
+        # ... Más configuraciones según tus necesidades ...
+    },
+}
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
 ]
@@ -158,8 +165,6 @@ REST_FRAMEWORK = {
        'rest_framework.authentication.TokenAuthentication',
    )
 }
-
-
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
