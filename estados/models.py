@@ -1,7 +1,8 @@
 from djongo import models
-from django.forms import JSONField
 from emprendimiento.models import Emprendimiento
 from users.models import User
+
+
 
 class Estado(models.Model):
     fecha = models.DateField()
@@ -21,3 +22,4 @@ class Gasto(models.Model):
     estado = models.ForeignKey(Estado, related_name='gastos', on_delete=models.CASCADE)
     tipo = models.CharField(max_length=255)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
+

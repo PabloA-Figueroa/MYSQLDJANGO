@@ -15,6 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib.auth import views as auth_views
+from django.template.defaulttags import url
+
 from camaraComercio.views import inicioCurso  # Asegúrate de importar tu función de vista
 
 
@@ -27,13 +29,17 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from estados.router import urlpatterns as estado_urlpatterns
+from estados import views
 from comentarios.api.router import router_post
 from Cursos.router import urlpatterns as curso_urlpatterns
 from emprendimiento.router import urlpatterns as emprendimiento_urlpatterns
 from inventario.router import urlpatterns as inventario_urlpatterns
+from Cursos.views import dashboard_view
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -46,7 +52,7 @@ urlpatterns = [
     path('apid-edit-users/', UserDetailAPIView.as_view(), name='user-detail'),
     path('api-emp/', include(emprendimiento_urlpatterns)),
     path('api-inv/', include(inventario_urlpatterns)),
-
+    path('estado/<int:pk>/', views.EstadoDetalleView.as_view(), name='detalle-estado'),
     path('api/', include(router.urls)),
     path('api-user-login/', UserLogIn.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

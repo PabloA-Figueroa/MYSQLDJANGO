@@ -3,6 +3,7 @@ from estados.models import Estado
 from estados.serializers import EstadoSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
 
 
 # Create your views here.
@@ -20,3 +21,10 @@ class EstadoViewSet(ModelViewSet):
             queryset = queryset.filter(emprendimiento__nombre__icontains=termino_busqueda_emprendimiento)
 
         return queryset
+class EstadoEliminarView(generics.DestroyAPIView):
+    queryset = Estado.objects.all()
+    serializer_class = EstadoSerializer
+
+class EstadoDetalleView(generics.RetrieveAPIView):
+    queryset = Estado.objects.all()
+    serializer_class = EstadoSerializer

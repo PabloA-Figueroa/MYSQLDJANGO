@@ -1,6 +1,5 @@
 from django.contrib import admin
 from inventario.models import Inventario
-@admin.register(Inventario)
 class InventarioAdmin(admin.ModelAdmin):
     list_display = ['claseEmprendimiento', 'tipoProducto', 'cantidad', 'precio', 'comentario', 'mostrar_emprendimientos']
     search_fields = ['claseEmprendimiento', 'tipoProducto', 'cantidad', 'precio', 'comentario']

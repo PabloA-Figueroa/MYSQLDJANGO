@@ -6,64 +6,68 @@ from django import forms
 from django.forms import Textarea
 from polymorphic.admin import PolymorphicInlineSupportMixin, StackedPolymorphicInline
 from django.utils.html import format_html
-
-
-class ContenidoCursoInline(admin.StackedInline):
-    model = ContenidoCurso.cursos.through
-    extra = 1
-    verbose_name = "Agregar Contenido para el Curso"
-    verbose_name_plural = "Agregar Contenido para el Curso"
+from jet.admin import CompactInline
+from nested_admin import NestedModelAdmin, NestedStackedInline, NestedPolymorphicInlineSupportMixin, NestedStackedPolymorphicInline
 
 
 # Define inlines for each resource type
-class RecursoTextoInline(StackedPolymorphicInline.Child):
+class RecursoTextoInline(NestedStackedPolymorphicInline.Child, NestedStackedInline):
     model = RecursoTexto
 
-
-class RecursoImagenInline(StackedPolymorphicInline.Child):
+class RecursoImagenInline(NestedStackedPolymorphicInline.Child, NestedStackedInline):
     model = RecursoImagen
 
-
-class RecursoVideoInline(StackedPolymorphicInline.Child):
+class RecursoVideoInline(NestedStackedPolymorphicInline.Child, NestedStackedInline):
     model = RecursoVideo
 
-
-# Base polymorphic inline for Recurso
-class RecursoInline(StackedPolymorphicInline):
+class RecursoInline(NestedStackedPolymorphicInline):
     model = Recurso
     child_inlines = (
         RecursoTextoInline,
         RecursoImagenInline,
         RecursoVideoInline,
     )
+class ContenidoCursoInline(NestedStackedInline):
+    model = ContenidoCurso
+    extra = 1
+    inlines = [RecursoInline]
+    verbose_name = "Agregar Contenido para el Curso"
+    verbose_name_plural = "Agregar Contenido para el Curso"
 
+
+class RecursoAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'contenido_curso', 'tipo_recurso']
+    search_fields = ['nombre', 'contenido_curso__titulo']
+
+    def tipo_recurso(self, obj):
+        if isinstance(obj, RecursoTexto):
+            return format_html('<span style="color: #ff0000;">Texto</span>')
+        elif isinstance(obj, RecursoImagen):
+            return format_html('<span style="color: #0000ff;">Imagen</span>')
+        elif isinstance(obj, RecursoVideo):
+            return format_html('<span style="color: #00ff00;">Video</span>')
+        else:
+            return 'Desconocido'
 
 # Admin para ContenidoCurso
-@admin.register(ContenidoCurso)
 class ContenidoCursoAdmin(PolymorphicInlineSupportMixin, admin.ModelAdmin):
     inlines = [RecursoInline]
     list_display = ['titulo']
     search_fields = ['titulo']
 
-
 @admin.register(Cursos)
-class CursoAdmin(admin.ModelAdmin):
-    # def display_temas(self, obj):
-    #    return ', '.join([tema.nombre for tema in obj.temas.all()])
-    # display_temas.short_description = 'Temas'
-    list_display = ['titulo', 'image_tag']
+class CursoAdmin(NestedPolymorphicInlineSupportMixin, NestedModelAdmin):
+    list_display = ['titulo']
     search_fields = ['titulo', 'contenido']
-    list_filter = ('temas', 'fecha')
+    list_filter = ('fecha','titulo')
     inlines = [ContenidoCursoInline]
     fieldsets = (
         ('Información Básica', {'fields': ('titulo', 'imagen')}),
-        ('Detalles del Curso', {'fields': ('contenido', 'temas')}),
+        ('Detalles del Curso', {'fields': ('contenido', )}),
     )
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 4, 'cols': 40})},
     }
 
-    def image_tag(self, obj):
-        return format_html('<img src="{}" style="max-width:200px; max-height:200px"/>'.format(obj.imagen.url))
 
     # filter_horizontal = ['temas']

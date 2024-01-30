@@ -20,7 +20,7 @@ class EstadoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Estado
-        fields = ['fecha', 'ingresos', 'gastos', 'beneficios', 'usuario', 'emprendimiento', 'comentarios', 'ingresoTotal', 'gastoTotal', 'beneficiosTotal']
+        fields = ['id','fecha', 'ingresos', 'gastos', 'beneficios', 'usuario', 'emprendimiento', 'comentarios', 'ingresoTotal', 'gastoTotal', 'beneficiosTotal']
 
     def create(self, validated_data):
         # Pop removes the field and returns the value

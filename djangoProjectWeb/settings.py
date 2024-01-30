@@ -31,9 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'adminlte3',
-    'adminlte3_theme',
+    'jet.dashboard',
+    'jet',  # Antes de 'django.contrib.admin'
     'camaraComercio',
+    'nested_admin',
     'comentarios',
     'Cursos',
     'estados',
@@ -86,7 +87,7 @@ import os # necesario para el siguiente código
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -99,6 +100,18 @@ TEMPLATES = [
     },
 ]
 
+# JET CUSTOM 111827
+JET_DEFAULT_THEME = 'light-green'  # O cualquier otro tema disponible
+JET_SIDE_MENU_COMPACT = True  # Para un menú lateral más compacto
+JET_CHANGE_FORM_SIBLING_LINKS = True  # Para mostrar los botones de "Guardar y continuar editando" y "Guardar y agregar otro" en la parte superior del formulario
+JET_INDEX_DASHBOARD = 'jet.dashboard.dashboard.DefaultIndexDashboard'
+JET_APP_INDEX_DASHBOARD = 'jet.dashboard.dashboard.DefaultAppIndexDashboard'
+JET_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+DEBUG = True
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+
+
 WSGI_APPLICATION = 'djangoProjectWeb.wsgi.application'
 
 
@@ -108,7 +121,7 @@ WSGI_APPLICATION = 'djangoProjectWeb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'PRUEBISIMA',
+        'NAME': 'pruebisima2',
         'USER': 'root',
         'PASSWORD': 'password',
         'HOST': 'localhost',   # O la dirección del servidor de tu base de datos

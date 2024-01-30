@@ -1,0 +1,57 @@
+{% load static %}
+
+<!-- Asegúrate de incluir los CSS de Bootstrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Contenedor principal -->
+<div class="container mt-3">
+    <!-- Fila de tarjetas de métricas -->
+    <div class="row">
+        {% for venta in module.children %}
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">{{ venta.label }}</h5>
+                    <p class="card-text">${{ venta.valor|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Gráfico de ventas de productos -->
+    <div class="row">
+        <div class="col-md-12">
+            <canvas id="ventasChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Incluir Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Inicialización del gráfico -->
+<script>
+var ctx = document.getElementById('ventasChart').getContext('2d');
+var ventasChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["2017", "2018", "2019", "2020"], // Deberían ser dinámicas basadas en tus datos
+        datasets: [
+            // Debes generar estos datos en tu vista y pasarlos a la plantilla
+        ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        },
+        legend: {
+            display: true
+        }
+    }
+});
+</script>

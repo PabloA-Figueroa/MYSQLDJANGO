@@ -9,14 +9,14 @@ class Tema(models.Model):
     imagen = models.ImageField(upload_to='temas/', null=True, blank=True)
     def __str__(self):
         return self.nombre
-    
+
 
 class Cursos(models.Model):
     titulo = models.CharField(max_length=200)
     contenido = RichTextField(blank=True, null=True)
     imagen = models.ImageField(upload_to='cursos/', null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
-    temas = models.ManyToManyField(Tema, blank=True)
+
     def __str__(self):
         return self.titulo
 
@@ -24,7 +24,7 @@ class ContenidoCurso(models.Model):
     titulo = models.CharField(max_length=400)
     concepto = RichTextField(blank=True, null=True)
     imagen = models.ImageField(upload_to='contenidos/', blank=True, null=True)
-    cursos = models.ManyToManyField(Cursos,blank=True)
+    cursos = models.ForeignKey(Cursos, related_name='curso', on_delete=models.CASCADE)
     def __str__(self):
         return self.titulo
 
@@ -39,8 +39,8 @@ class RecursoTexto(Recurso):
     texto = RichTextField(blank=True, null=True)
 
 class RecursoImagen(Recurso):
-    imagen = models.ImageField(upload_to='recursos/imagenes/')
+    imagen = models.ImageField(upload_to='cursos/recursos/')
 
 class RecursoVideo(Recurso):
-    video = models.FileField(upload_to='recursos/videos/')
+    video = models.FileField(upload_to='cursos/recursos/',null=True, blank=True)
     url_video = models.URLField(blank=True, null=True)
